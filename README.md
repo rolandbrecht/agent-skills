@@ -43,6 +43,15 @@ Use when encountering any bug, test failure, or unexpected behavior. This skill 
 - `references/bug-report.md` — The 3-strike escalation template
 - `references/tracing.md` — Actionable boundary-logging patterns (frontend, backend, DB, CI)
 
+### [self-reflection](./self-reflection/)
+
+A "meta-skill" executed at the end of complex tasks. It solves the LLM "stateless learner" problem by forcing the agent to codify its hard-won lessons into reusable YAML/Markdown rules before it is allowed to close a task.
+
+**Files:**
+
+- `SKILL.md` — The continuous improvement protocol
+- `references/lesson-template.md` — Checklists for adding architectural gotchas to project instruction files
+
 ## Installation
 
 ### Via skills.sh (Recommended)
