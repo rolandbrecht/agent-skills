@@ -1,0 +1,51 @@
+name: Update Submodules
+
+on:
+  schedule:
+    # Run at 00:00 every 7 days (Saturday)
+    - cron: '0 0 * * 6'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          # Fetch all history so push works properly
+          fetch-depth: 0 
+          
+      - name: Update sparse-checkout submodule
+        run: |
+          # Initialize submodule
+          git submodule update --init
+          
+          # Navigate to submodule and pull latest main
+          cd .external-skills/claude-plugins-official
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          
+          # Return to root
+          cd ../..
+          
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          git add .external-skills/claude-plugins-official
+          git commit -m "chore: Weekly automatic submodule update"
+          git push
