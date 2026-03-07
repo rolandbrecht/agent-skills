@@ -2,13 +2,13 @@
 > This file outlines the required constraints and methodologies for AI coding assistants operating on projects utilizing the `agent-skills` repository.
 
 1. Structural Refactoring
-[Trigger]: Renaming APIs, finding dead code, cross-file refactoring
-[Skill Requirement]: You must use the `ast-code-graph` skill. Do not rely on LLM context windows or regex text search. Use the mathematically sound `ast-grep` CLI to execute structural rewrites.
+[Trigger]: ANY time you need to search for code structure, refactor symbols, analyze impact, find dead code, or trace dependencies.
+[Skill Requirement]: You must use the `ast-code-graph` skill. Do not rely on LLM context windows or regex text search for structural modifications. Use the `ast-grep` tool to parse the AST semantically and generate JSON outputs.
 
 2. Bug Fixing & Diagnostics
-[Trigger]: A test fails, a bug is reported, or a UI breaks
-[Skill Requirement]: You must use the `systematic-debugging` skill. No fixes without a root cause investigation first. Do not guess. Do not supply quick patches. You must inject boundary telemetry to trace the exact line of data corruption. Escalation is required after 3 failed fix attempts.
+[Trigger]: AUTOMATICALLY anytime you encounter a stack trace, test failure, production bug, or unexpected behavior.
+[Skill Requirement]: You must use the `systematic-debugging` skill. No fixes without a root cause investigation first. Do not guess. Do not supply quick patches. You must reproduce the bug using a script, heavily utilize `grep_search` to understand context, and trace boundaries. Escalation is MANDATORY after 3 failed fix attempts.
 
 3. Continuous Improvement
-[Trigger]: You finish a complex task or discover an undocumented project heuristic
-[Skill Requirement]: You must use the `self-reflection` skill. Codify the hard-won architectural lesson into markdown format so future AI agents do not repeat the same mistakes.
+[Trigger]: ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk.
+[Skill Requirement]: You must use the `self-reflection` skill before closing a complex task. Codify the hard-won project lessons into markdown format so future AI agents do not repeat the same mistakes.

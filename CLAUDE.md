@@ -6,18 +6,18 @@ As an AI coding agent, you MUST follow these directives when working in this rep
 
 ## 1. Architectural Changes & Refactoring
 
-**Trigger:** When asked to rename APIs, strip dead code, or perform sweeping changes across multiple files.
+**Trigger:** ANY time you need to search for code structure, refactor symbols, analyze impact, find dead code, or trace dependencies. (e.g., "find all calls to fetch", "rename oldApi to newApi safely").
 **Skill to use:** `ast-code-graph`
-**Directive:** You MUST NOT use basic text search (`grep`) or guess at references. You must use the `ast-grep` CLI or graph builder to find structural references and perform safe, AST-aware rewrites.
+**Directive:** You MUST NOT use basic text search (`grep`) or guess at references for structural modifications. You must use this skill's `ast-grep` CLI instructions to parse the AST semantically, generate JSON outputs, and safely perform refactoring or impact analysis.
 
 ## 2. Debugging & Test Failures
 
-**Trigger:** When asked to fix a bug, investigate a test failure, or debug unexpected behavior.
+**Trigger:** AUTOMATICALLY anytime you encounter a stack trace, test failure, production bug, or unexpected behavior.
 **Skill to use:** `systematic-debugging`
-**Directive:** You MUST NOT guess the solution or propose random fixes. You are constrained to the "No fixes without root cause" protocol. You must trace the error boundary and prove the failure before any code modification. If 3 fixes fail, you must escalate using the 3-strike protocol.
+**Directive:** You MUST NOT guess the solution or propose random fixes. You are constrained to the "No fixes without root cause" protocol. You must trace the error boundary, heavily utilize `grep_search` to understand context, and prove the failure with a reproduction script before any code modification. If 3 fixes fail, you MUST escalate and stop modifying code.
 
 ## 3. Post-Task Reflection
 
-**Trigger:** When concluding a complex debugging session, discovering a project-specific architecture rule, or writing a reusable bash script.
+**Trigger:** ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk.
 **Skill to use:** `self-reflection`
-**Directive:** You are not a temporary worker. Over time, you must codify project-specific quirks and lessons learned into reusable rules (e.g., adding them to this `CLAUDE.md` file) using the `self-reflection` protocol.
+**Directive:** You MUST trigger this skill before closing a complex task to codify hard-won lessons into reusable project rules (saving them to `CLAUDE.md`, `.cursorrules`, etc.). Future agents should not have to repeat your mistakes.
