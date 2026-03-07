@@ -1,17 +1,17 @@
 ---
 name: ast-code-graph
-description: Use AST parsing and code graph indexing for deep codebase analysis — refactoring, dead-code detection, dependency tracing, impact analysis, and safe symbol renaming
+description: Use this skill ANY time you need to search for code structure, refactor symbols, analyze impact, find dead code, or trace dependencies. Trigger this for queries like "find all calls to fetch", "rename oldApi to newApi safely", "find unused imports", or "what modules depend on X?". It uses AST parsing to understand code semantically, which is vastly superior to and safer than text-based grep for code modifications.
 ---
 
 # AST & Code Graph Indexing
 
 ## Overview
 
-Text-based search (`grep`, `ripgrep`) finds string matches. AST-based analysis understands **structure** — it knows the difference between a function definition, a function call, a comment, and a string literal.
+Text-based search (`grep`, `ripgrep`) finds string matches. AST-based analysis understands **structure** — it knows the difference between a function definition, a function call, a comment, and a string literal. 
 
 **Primary tool:** [ast-grep](https://ast-grep.github.io/) (`sg` / `ast-grep`) — a fast, Rust-based CLI for structural code search, lint, and rewriting. It uses tree-sitter for parsing and supports 20+ languages out of the box.
 
-**Core principle:** When the question is about *code structure*, use AST analysis. When the question is about *text content*, use grep.
+**Core principle:** When the question is about *code structure*, use AST analysis. When the question is about *text content*, use grep. 
 
 ## When to Use
 
@@ -33,11 +33,13 @@ Use this skill when the task involves:
 - Finding files by name or extension → use `find`/`fd`
 - The codebase is < 5 files and you can read them all → just read them
 
+---
+
 ## Phase 1: Search — Find Code by Structure
 
 ### ast-grep (recommended — all languages)
 
-ast-grep uses **pattern syntax** that looks like the code you're searching for, with `$METAVAR` wildcards that match any AST node.
+`ast-grep` uses **pattern syntax** that looks exactly like the code you're searching for, using `$METAVAR` wildcards to match any AST node.
 
 **Basic pattern search:**
 
@@ -57,9 +59,9 @@ ast-grep -p 'if ($COND) $STMT' -l js src/
 
 **Key metavariable syntax:**
 
-- `$NAME` — matches a single AST node (like regex `.`)
-- `$$$ARGS` — matches zero or more nodes (like regex `.*`)
-- `$_` — anonymous match (don't need to reference it)
+- `$NAME` — matches a **single** AST node (like regex `.`). Example: `foo($ARG)` matches `foo(a)` but NOT `foo(a, b)`.
+- `$$$ARGS` — matches **zero or more** nodes (like regex `.*`). Example: `foo($$$ARGS)` matches `foo()`, `foo(a)`, and `foo(a, b)`. **This is the most common pitfall! Default to `$$$` when matching arguments or block bodies unless you strictly want one node.**
+- `$_` — anonymous match (when you don't need to reference it later).
 
 **Search with rewrite preview:**
 
@@ -73,130 +75,66 @@ ast-grep -p 'var $NAME = $VALUE' -r 'const $NAME = $VALUE' -l js --interactive s
 
 See [ast-grep-cheatsheet.md](ast-grep-cheatsheet.md) for the full pattern reference.
 
-### Fallback: Language-Specific Parsers
+---
 
-When you need full AST traversal beyond pattern matching:
+## Phase 2: Pipeline JSON Output to Scripts
 
-**JavaScript/TypeScript — bundled helper:**
+Often, simply printing matches to the terminal isn't enough. For complex analysis, you should export the matches as JSON and process them with a script. This is highly recommended for building graphs, finding dead code, or generating reports.
 
+**Generate and save JSON:**
 ```bash
-# Export list with line numbers
-node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file> --symbols
-
-# Full JSON AST
-node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file>
+# Export all function definitions to a file for secondary analysis
+ast-grep -p 'function $NAME($$$PARAMS) { $$$BODY }' -l typescript --json src/ > functions.json
 ```
 
-**Python — bundled graph builder:**
+Then, write a quick Python or Node.js script to read `functions.json` and extract the specific node text, line numbers, or relationships you need! 
+*(e.g., parsing the JSON to find functions that have a specific naming convention or parsing out all `import` sources to build a dependency graph).*
 
-```bash
-python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph.py <directory> [flags]
-```
+---
 
-## Phase 2: Analyze — Use Rules for Complex Queries
+## Phase 3: Complex Workflows (Step-by-Step)
 
-ast-grep supports **YAML rule configurations** for combining multiple conditions with logical operators.
+Here are detailed methodologies for solving complex structural problems:
 
-### Inline rules (ad-hoc, no file needed)
+### Workflow A: Impact Analysis (What breaks if I change X?)
+1. **Search**: Find the definition of the target symbol `X` using `ast-grep` and ensure you have its exact name and module path.
+2. **Find Direct Callers**: Use `ast-grep` to find all import statements that import `X`, and all function calls to `X()`. Save these results to a JSON file.
+3. **Analyze**: If the codebase is large, write a quick script to parse the JSON and list the files/functions that call `X`. 
+4. **Iterate (Transitive Callers)**: If necessary, repeat the process for the functions that call `X` to build a full call graph. (Alternatively, if this is a Python project, use the bundled `build-graph.py` script as shown in Phase 4).
 
-```bash
-ast-grep scan --inline-rules '
-id: find-unsafe-eval
-language: JavaScript
-rule:
-  pattern: eval($CODE)
-' src/
-```
+### Workflow B: Safe Refactoring / Migration
+1. **Search**: `ast-grep -p '<pattern>' src/` to find all matches of the old pattern.
+2. **Review**: Add `--json` to inspect match details and ensure your pattern isn't capturing unintended code boundaries (e.g. ensure you used `$$$BODY` for blocks, not `$BODY`).
+3. **Preview**: Add `-r '<rewrite>'` to see the replacement printed to stdout. Check a few edge cases.
+4. **Apply**: Add `--interactive` to selectively apply changes, or remove `--interactive` if you're 100% confident (though you should usually trust but verify).
+5. **Verify**: Re-run the search pattern `ast-grep -p '<pattern>'` and ensure it returns 0 matches.
 
-### Rule file (reusable)
+---
 
-Save as `rules/no-console-log.yml`:
+## Phase 4: Bundled Graph Builders (Fallback)
 
-```yaml
-id: no-console-log
-language: JavaScript
-severity: warning
-message: Remove console.log before committing
-rule:
-  pattern: console.log($$$ARGS)
-```
+While `ast-grep` + JSON pipelines are powerful, this skill includes bundled scripts for common graph building tasks when you need full AST traversal beyond simple pattern matching. 
 
-Run:
-
-```bash
-ast-grep scan --rule rules/no-console-log.yml src/
-```
-
-### Composing rules
-
-Rules support `all`, `any`, `not`, `has`, `inside`, `follows`, `precedes`:
-
-```yaml
-id: await-in-loop
-language: JavaScript
-rule:
-  pattern: await $EXPR
-  inside:
-    any:
-      - kind: for_statement
-      - kind: for_in_statement
-      - kind: while_statement
-    stopBy: end
-```
-
-## Phase 3: Index — Build the Code Graph
-
-For deeper analysis (call graphs, dependency trees, dead code), build a structured graph. See [graph-schema.md](graph-schema.md) for the node/edge schema.
-
-### Using ast-grep for graph building
-
-Combine ast-grep's `--json` output with graph construction:
-
-```bash
-# Export all function definitions as JSON
-ast-grep -p 'function $NAME($$$PARAMS) { $$$BODY }' -l js --json src/
-
-# Export all import statements as JSON
-ast-grep -p 'import $$$SPECS from $MOD' -l js --json src/
-
-# Export all require calls as JSON
-ast-grep -p 'const $NAME = require($MOD)' -l js --json src/
-```
-
-### Using bundled scripts
+*Use these particularly when checking for dead code or circular dependencies.*
 
 **Python codebases:**
-
 ```bash
-python3 scripts/build-graph.py <dir> --callers <symbol>  # find callers
-python3 scripts/build-graph.py <dir> --unused            # dead code
-python3 scripts/build-graph.py <dir> --depends-on <mod>  # reverse deps
-python3 scripts/build-graph.py <dir> --cycles            # circular imports
+python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph.py <directory> [flags]
+
+# Common Flags:
+# --callers <symbol>  (find direct and transitive callers)
+# --unused            (find dead code / unreferenced symbols)
+# --depends-on <mod>  (find reverse dependencies)
+# --cycles            (detect circular imports)
 ```
 
-## Phase 4: Act — Apply Changes Safely
-
-### Structural rewriting with ast-grep
-
+**JavaScript/TypeScript codebases:**
 ```bash
-# Replace deprecated API calls
-ast-grep -p 'oldApi($ARGS)' -r 'newApi($ARGS)' -l js --interactive src/
-
-# Convert arrow functions to regular functions
-ast-grep -p 'const $NAME = ($$$PARAMS) => { $$$BODY }' \
-         -r 'function $NAME($$$PARAMS) { $$$BODY }' -l js --interactive src/
-
-# Add error handling wrapper
-ast-grep -p 'fetch($URL)' -r 'safeFetch($URL)' -l js --interactive src/
+# Export a quick symbol list with line numbers
+node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file> --symbols
 ```
 
-### Safe refactoring workflow
-
-1. **Search** — `ast-grep -p '<pattern>' src/` to find all matches
-2. **Review** — Add `--json` to inspect match details and context
-3. **Preview** — Add `-r '<rewrite>'` to see the replacement
-4. **Apply** — Add `--interactive` to selectively apply changes
-5. **Verify** — Re-run the search to confirm zero remaining matches
+---
 
 ## Quick Reference
 
@@ -207,8 +145,7 @@ ast-grep -p 'fetch($URL)' -r 'safeFetch($URL)' -l js --interactive src/
 | Find unused imports | `ast-grep scan --inline-rules '...' src/` |
 | Rename `oldFn` → `newFn` | `ast-grep -p 'oldFn($$$A)' -r 'newFn($$$A)' --interactive src/` |
 | Convert `var` → `const` | `ast-grep -p 'var $N = $V' -r 'const $N = $V' --interactive src/` |
-| Find patterns in JSON output | `ast-grep -p '<pattern>' --json src/` |
-| Run YAML lint rule | `ast-grep scan --rule rule.yml src/` |
+| JSON output for scripting | `ast-grep -p '<pattern>' --json src/ > out.json` |
 | Check change impact | Build graph → find all transitive callers (reverse BFS) |
 
 ## Supporting Files
@@ -216,5 +153,5 @@ ast-grep -p 'fetch($URL)' -r 'safeFetch($URL)' -l js --interactive src/
 - **[ast-grep-cheatsheet.md](ast-grep-cheatsheet.md)** — Full ast-grep pattern and CLI reference
 - **[graph-schema.md](graph-schema.md)** — Node and edge type definitions with ER diagram
 - **[query-patterns.md](query-patterns.md)** — Detailed cookbook of query patterns with examples
-- **[scripts/parse-js.mjs](scripts/parse-js.mjs)** — Cross-platform Node.js script for JS/TS AST parsing (fallback)
-- **[scripts/build-graph.py](scripts/build-graph.py)** — Python code graph builder (stdlib only)
+- **[scripts/parse-js.mjs](scripts/parse-js.mjs)** — Cross-platform Node.js script for JS/TS AST parsing
+- **[scripts/build-graph.py](scripts/build-graph.py)** — Python code graph builder
