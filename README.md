@@ -65,24 +65,24 @@ npx skills install github.com/rolandbrecht/agent-skills/ast-code-graph
 
 ### Manual Installation
 
-You can also install skills manually by copying the skill directory into your platform's skills location.
+You can also install skills manually by copying the skill directories into your platform's skills location.
 
 **Claude Code:**
 
 ```bash
 # User-level (available in all projects)
-cp -r ast-code-graph ~/.claude/skills/
+cp -r * ~/.claude/skills/
 
 # Or project-level (shared via git)
 mkdir -p .claude/skills
-cp -r ast-code-graph .claude/skills/
+cp -r * .claude/skills/
 ```
 
 **Gemini CLI / Antigravity:**
 
 ```bash
 mkdir -p ~/.gemini/antigravity/skills
-cp -r ast-code-graph ~/.gemini/antigravity/skills/
+cp -r * ~/.gemini/antigravity/skills/
 ```
 
 **OpenAI Codex:**
@@ -90,7 +90,7 @@ cp -r ast-code-graph ~/.gemini/antigravity/skills/
 ```bash
 # User-level
 mkdir -p ~/.codex/skills
-cp -r ast-code-graph ~/.codex/skills/
+cp -r * ~/.codex/skills/
 ```
 
 ## License
