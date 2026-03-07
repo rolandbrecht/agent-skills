@@ -49,3 +49,17 @@ jobs:
           git add .external-skills/claude-plugins-official
           git commit -m "chore: Weekly automatic submodule update"
           git push
+
+  cleanup:
+    name: Delete old runs
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 10
