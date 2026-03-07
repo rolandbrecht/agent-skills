@@ -9,7 +9,7 @@ description: Execute this meta-skill ALWAYS at the end of complex tasks, debuggi
 
 AI coding agents are naturally "stateless." You might spend 2 hours debugging a complex Webpack configuration, a subtle race condition, or a confusing project directory layout, eventually fix it, and then completely "forget" the lesson when a new conversation starts.
 
-The core goal of this skill is to turn you from a "temporary worker" into a "systematic documenter." 
+The core goal of this skill is to turn you from a "temporary worker" into a "systematic documenter."
 
 **Core Principle:** Hard-won knowledge must be persisted. If a task was difficult because of an undocumented project quirk or architectural gotcha, you MUST write a rule so the *next* agent (or yourself in the future) doesn't repeat your mistakes.
 
@@ -42,7 +42,7 @@ Based on your internal reflection, choose the appropriate output format below an
 
 ### 1. Project-Specific Rules (`llms.txt` / `.cursorrules` / `CLAUDE.md`)
 
-Use this when you learned a specific convention for the current repository. 
+Use this when you learned a specific convention for the current repository.
 
 *If none of these files exist yet, ask the user if they'd like you to create one (preferring `CLAUDE.md` or `llms.txt`).*
 

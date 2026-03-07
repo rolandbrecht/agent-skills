@@ -36,7 +36,7 @@ Use for ANY technical issue:
 1. **Information Gathering (Do Not Guess)**
    - Read the error message and stack trace completely. Note the exact file paths and line numbers.
    - Use `view_file` to read the surrounding code where the error occurred.
-   - Use `grep_search` to find definitions, usages, or configurations related to the failing components. 
+   - Use `grep_search` to find definitions, usages, or configurations related to the failing components.
    - *Never* assume you know what a file contains without checking or listing its directory.
 
 2. **Reproduce and Isolate**
