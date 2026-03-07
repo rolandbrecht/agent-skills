@@ -33,9 +33,46 @@ AST parsing and code graph indexing for structural code search, refactoring, dea
 - `scripts/parse-js.mjs` — Cross-platform JS/TS AST parser
 - `scripts/build-graph.py` — Python code graph builder
 
-## Usage
+## Installation
 
-Each skill directory contains a `SKILL.md` with instructions for an AI coding agent. Point your agent's skill directory to this repository to make the skills available.
+### Via skills.sh (Recommended)
+
+The easiest way to install these skills is using [skills.sh](https://skills.sh/).
+
+```bash
+# Example: Install the ast-code-graph skill
+npx skills.sh install github.com/rolandbrecht/agent-skills/ast-code-graph
+```
+
+### Manual Installation
+
+You can also install skills manually by copying the skill directory into your platform's skills location.
+
+**Claude Code:**
+
+```bash
+# User-level (available in all projects)
+cp -r ast-code-graph ~/.claude/skills/
+
+# Or project-level (shared via git)
+mkdir -p .claude/skills
+cp -r ast-code-graph .claude/skills/
+```
+
+**Gemini CLI / Antigravity:**
+
+```bash
+mkdir -p ~/.gemini/antigravity/skills
+cp -r ast-code-graph ~/.gemini/antigravity/skills/
+```
+
+**OpenAI Codex:**
+
+```bash
+# User-level
+mkdir -p ~/.codex/skills
+cp -r ast-code-graph ~/.codex/skills/
+```
 
 ## License
 
