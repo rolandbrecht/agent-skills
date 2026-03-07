@@ -52,6 +52,18 @@ A "meta-skill" executed at the end of complex tasks. It solves the LLM "stateles
 - `SKILL.md` — The continuous improvement protocol
 - `references/lesson-template.md` — Checklists for adding architectural gotchas to project instruction files
 
+## Project Context Files
+
+Optional entry-point files for your project root. They provide a quick decision tree and key rules so the agent knows when to trigger which skill.
+
+| File | Platform |
+|---|---|
+| `CLAUDE.md` | Claude Code |
+| `AGENTS.md` | OpenAI Codex / Generic Agents |
+| `llms.txt` | Web / any LLM ([llmstxt.org](https://llmstxt.org) standard) |
+
+Copy the entry-point file for your platform to your project root. They reference skills by name, which agents automatically discover from their skills directory.
+
 ## Installation
 
 ### Via skills.sh (Recommended)
