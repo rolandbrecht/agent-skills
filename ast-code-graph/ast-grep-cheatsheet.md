@@ -58,6 +58,7 @@ ast-grep -p '<pattern>' --json [paths...]
 | `--lang` | `-l` | Language (js, ts, py, rust, go, java, etc.) |
 | `--interactive` | `-i` | Prompt before each replacement |
 | `--json` | | Machine-readable JSON output |
+| `--debug-query=cst` | | Dumps the parsed syntax tree to inspect node kinds and structure |
 
 ### `ast-grep scan` (rule-based linting)
 
@@ -67,6 +68,9 @@ ast-grep scan --rule <rule.yml> [paths...]
 
 # Run inline rule (no file needed)
 ast-grep scan --inline-rules '<yaml>' [paths...]
+
+# Test rule against standard input (great for quick debugging without saving dummy files)
+echo "const x = await fetch();" | ast-grep scan --inline-rules '<yaml>' --stdin
 
 # Run all rules in a project (requires sgconfig.yml)
 ast-grep scan [paths...]
@@ -181,6 +185,9 @@ fix: 'replacement.code($X)'         # auto-fix pattern
 
 ## Tips
 
+- **Always use `stopBy: end` in relational rules** (`has`, `inside`). By default, it searches only the immediate children. `stopBy: end` ensures it traverses all descendants.
+- **Debug rules with `--debug-query=cst`** if your patterns aren't matching. It prints the exact AST node types and boundaries ast-grep is seeing.
+- **Escaping Inline Rules**: When running inline rules in bash, always escape shell variables `\$VAR` or use single quotes around the entire `--inline-rules` payload.
 - **Use single quotes** around patterns in bash to prevent `$` expansion
 - **Language is auto-detected** from file extensions if `--lang` is omitted
 - **On Linux**, use `ast-grep` (not `sg`, which is `setgroups`)

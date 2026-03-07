@@ -164,11 +164,46 @@ python3 scripts/build-graph.py /path/to/project --callers analyzeArticle
 
 ---
 
-## 7. Enforce Code Patterns with YAML Rules
+## 7. Advanced YAML Rule Scenarios
 
-**When to use:** Enforcing project-specific conventions, custom linting.
+**When to use:** Enforcing project-specific conventions, finding missing patterns, or searching within specific contexts.
 
-### ast-grep rule file
+### Scenario A: Enforcing a Contextual Code Pattern
+
+Find `console.log` but ONLY if it's inside a class method:
+
+```yaml
+id: console-in-class
+language: javascript
+rule:
+  pattern: console.log($$$ARG)
+  inside:
+    kind: method_definition
+    stopBy: end
+```
+
+### Scenario B: Finding Missing Safety Patterns
+
+Find `async` functions that lack a `try-catch` block:
+
+```yaml
+id: async-no-trycatch
+language: javascript
+rule:
+  all:
+    - kind: function_declaration
+    - has:
+        pattern: await $EXPR
+        stopBy: end
+    - not:
+        has:
+          pattern: try { $$$ } catch ($E) { $$$ }
+          stopBy: end
+```
+
+### Scenario C: Complex Auto-Fixing
+
+Preventing `console.log` in production using environment variables:
 
 ```yaml
 id: no-console-in-production
@@ -185,8 +220,10 @@ rule:
 fix: logger.info($$$ARGS)
 ```
 
+**Usage:**
+
 ```bash
-ast-grep scan --rule rules/no-console.yml src/
+ast-grep scan --rule rules/my-rule.yml src/
 ```
 
 ---
