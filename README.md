@@ -33,6 +33,11 @@ AST parsing and code graph indexing for structural code search, refactoring, dea
 - `scripts/parse-js.mjs` — Cross-platform JS/TS AST parser
 - `scripts/build-graph.py` — Python code graph builder
 
+```bash
+# Install the ast-code-graph skill
+npx skills add rolandbrecht/agent-skills --skill ast-code-graph
+```
+
 ### [systematic-debugging](./systematic-debugging/)
 
 Use when encountering any bug, test failure, or unexpected behavior. This skill forces the agent to use the scientific method—tracing root causes and injecting boundary telemetry—before attempting any code fixes. It includes a strict "3 Strikes" escalation protocol to prevent architecture-breaking guesswork.
@@ -43,6 +48,11 @@ Use when encountering any bug, test failure, or unexpected behavior. This skill 
 - `references/bug-report.md` — The 3-strike escalation template
 - `references/tracing.md` — Actionable boundary-logging patterns (frontend, backend, DB, CI)
 
+```bash
+# Install the systematic-debugging skill
+npx skills add rolandbrecht/agent-skills --skill systematic-debugging
+```
+
 ### [self-reflection](./self-reflection/)
 
 A "meta-skill" executed at the end of complex tasks. It solves the LLM "stateless learner" problem by forcing the agent to codify its hard-won lessons into reusable YAML/Markdown rules before it is allowed to close a task.
@@ -51,6 +61,11 @@ A "meta-skill" executed at the end of complex tasks. It solves the LLM "stateles
 
 - `SKILL.md` — The continuous improvement protocol
 - `references/lesson-template.md` — Checklists for adding architectural gotchas to project instruction files
+
+```bash
+# Install the self-reflection skill
+npx skills add rolandbrecht/agent-skills --skill self-reflection
+```
 
 ## Project Context Files
 
@@ -71,8 +86,11 @@ Copy the entry-point file for your platform to your project root. They reference
 The easiest way to install these skills is using [skills.sh](https://skills.sh/).
 
 ```bash
-# Example: Install the ast-code-graph skill
-npx skills install github.com/rolandbrecht/agent-skills/ast-code-graph
+# Install all skills
+npx skills add rolandbrecht/agent-skills
+
+# Example: Install only the ast-code-graph skill
+npx skills add rolandbrecht/agent-skills --skill ast-code-graph
 ```
 
 ### Manual Installation
