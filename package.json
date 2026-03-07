@@ -1,0 +1,28 @@
+{
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "[![CI](https://github.com/rolandbrecht/agent-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/rolandbrecht/agent-skills/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test tests/test-parse-js.mjs && python3 -m unittest tests/test_build_graph.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolandbrecht/agent-skills.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rolandbrecht/agent-skills/issues"
+  },
+  "homepage": "https://github.com/rolandbrecht/agent-skills#readme",
+  "dependencies": {
+    "acorn": "^8.16.0",
+    "acorn-walk": "^8.3.5"
+  }
+}

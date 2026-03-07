@@ -8,13 +8,10 @@
  *   node parse-js.mjs <file> --symbols    # Flat list of exported symbols with line numbers
  *
  * Requirements: Node.js v14+
- * Dependencies: acorn, acorn-walk (auto-installed to a temp dir if missing)
+ * Dependencies: acorn, acorn-walk (installed via 'npm install' in the repository root)
  */
 
-import { existsSync, readFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import { tmpdir } from 'os';
-import { execSync } from 'child_process';
+import { existsSync, readFileSync } from 'fs';
 import { createRequire } from 'module';
 
 // --- Args ---
@@ -32,20 +29,18 @@ if (!existsSync(file)) {
   process.exit(1);
 }
 
-// --- Ensure acorn is available ---
-const depsDir = join(tmpdir(), 'ast-skill-deps');
-const acornPath = join(depsDir, 'node_modules', 'acorn');
+// --- Ensure offline acorn is available ---
+const require = createRequire(import.meta.url);
+let acorn, walk;
 
-if (!existsSync(acornPath)) {
-  console.error(`Installing acorn to ${depsDir}...`);
-  mkdirSync(depsDir, { recursive: true });
-  execSync('npm init -y --silent 2>/dev/null || npm init -y --silent 2>nul', { cwd: depsDir, stdio: 'pipe' });
-  execSync('npm install --silent acorn acorn-walk', { cwd: depsDir, stdio: 'pipe' });
+try {
+  acorn = require('acorn');
+  walk = require('acorn-walk');
+} catch (e) {
+  console.error('Error: Security constraint. Missing offline parsers (acorn, acorn-walk).');
+  console.error('Please run "npm install" in the agent-skills directory to install local dependencies.');
+  process.exit(1);
 }
-
-const require = createRequire(join(depsDir, 'node_modules', '_'));
-const acorn = require('acorn');
-const walk = require('acorn-walk');
 
 // --- Parse ---
 const code = readFileSync(file, 'utf8');
