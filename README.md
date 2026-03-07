@@ -1,6 +1,6 @@
 # Agent Skills
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/rolandbrecht/agent-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/rolandbrecht/agent-skills/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A collection of shareable, high-quality AI coding agent skills and workflows. These skills provide structured guidance, recipes, and helper scripts to make LLM agents significantly more effective at complex codebase tasks.
