@@ -7,11 +7,11 @@ description: Use this skill ANY time you need to search for code structure, refa
 
 ## Overview
 
-Text-based search (`grep`, `ripgrep`) finds string matches. AST-based analysis understands **structure** — it knows the difference between a function definition, a function call, a comment, and a string literal. 
+Text-based search (`grep`, `ripgrep`) finds string matches. AST-based analysis understands **structure** — it knows the difference between a function definition, a function call, a comment, and a string literal.
 
 **Primary tool:** [ast-grep](https://ast-grep.github.io/) (`sg` / `ast-grep`) — a fast, Rust-based CLI for structural code search, lint, and rewriting. It uses tree-sitter for parsing and supports 20+ languages out of the box.
 
-**Core principle:** When the question is about *code structure*, use AST analysis. When the question is about *text content*, use grep. 
+**Core principle:** When the question is about *code structure*, use AST analysis. When the question is about *text content*, use grep.
 
 ## When to Use
 
@@ -82,12 +82,13 @@ See [ast-grep-cheatsheet.md](ast-grep-cheatsheet.md) for the full pattern refere
 Often, simply printing matches to the terminal isn't enough. For complex analysis, you should export the matches as JSON and process them with a script. This is highly recommended for building graphs, finding dead code, or generating reports.
 
 **Generate and save JSON:**
+
 ```bash
 # Export all function definitions to a file for secondary analysis
 ast-grep -p 'function $NAME($$$PARAMS) { $$$BODY }' -l typescript --json src/ > functions.json
 ```
 
-Then, write a quick Python or Node.js script to read `functions.json` and extract the specific node text, line numbers, or relationships you need! 
+Then, write a quick Python or Node.js script to read `functions.json` and extract the specific node text, line numbers, or relationships you need!
 *(e.g., parsing the JSON to find functions that have a specific naming convention or parsing out all `import` sources to build a dependency graph).*
 
 ---
@@ -97,12 +98,14 @@ Then, write a quick Python or Node.js script to read `functions.json` and extrac
 Here are detailed methodologies for solving complex structural problems:
 
 ### Workflow A: Impact Analysis (What breaks if I change X?)
+
 1. **Search**: Find the definition of the target symbol `X` using `ast-grep` and ensure you have its exact name and module path.
 2. **Find Direct Callers**: Use `ast-grep` to find all import statements that import `X`, and all function calls to `X()`. Save these results to a JSON file.
-3. **Analyze**: If the codebase is large, write a quick script to parse the JSON and list the files/functions that call `X`. 
+3. **Analyze**: If the codebase is large, write a quick script to parse the JSON and list the files/functions that call `X`.
 4. **Iterate (Transitive Callers)**: If necessary, repeat the process for the functions that call `X` to build a full call graph. (Alternatively, if this is a Python project, use the bundled `build-graph.py` script as shown in Phase 4).
 
 ### Workflow B: Safe Refactoring / Migration
+
 1. **Search**: `ast-grep -p '<pattern>' src/` to find all matches of the old pattern.
 2. **Review**: Add `--json` to inspect match details and ensure your pattern isn't capturing unintended code boundaries (e.g. ensure you used `$$$BODY` for blocks, not `$BODY`).
 3. **Preview**: Add `-r '<rewrite>'` to see the replacement printed to stdout. Check a few edge cases.
@@ -113,11 +116,12 @@ Here are detailed methodologies for solving complex structural problems:
 
 ## Phase 4: Bundled Graph Builders (Fallback)
 
-While `ast-grep` + JSON pipelines are powerful, this skill includes bundled scripts for common graph building tasks when you need full AST traversal beyond simple pattern matching. 
+While `ast-grep` + JSON pipelines are powerful, this skill includes bundled scripts for common graph building tasks when you need full AST traversal beyond simple pattern matching.
 
 *Use these particularly when checking for dead code or circular dependencies.*
 
 **Python codebases:**
+
 ```bash
 python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph.py <directory> [flags]
 
@@ -129,6 +133,7 @@ python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph
 ```
 
 **JavaScript/TypeScript codebases:**
+
 ```bash
 # Export a quick symbol list with line numbers
 node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file> --symbols
