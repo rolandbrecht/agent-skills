@@ -18,6 +18,7 @@ The code graph represents a codebase as a directed graph of **nodes** (symbols) 
 Each node has a unique ID: `<relative-file-path>::<symbol-name>`
 
 Examples:
+
 - `src/llm/analyzer.js::analyzeArticle`
 - `src/storage/db.js::Database`
 - `src/config.js::config`

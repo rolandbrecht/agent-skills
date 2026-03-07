@@ -25,6 +25,7 @@ ast-grep matches **AST nodes**, not text. You write patterns that look like real
 | `$_` | One node (anonymous, no capture) | regex `.` |
 
 Metavariables that appear multiple times in a pattern must match the **same** code:
+
 ```bash
 # Finds: x && x()  but NOT: x && y()
 ast-grep -p '$A && $A()' src/
@@ -49,6 +50,7 @@ ast-grep -p '<pattern>' --json [paths...]
 ```
 
 **Key flags:**
+
 | Flag | Short | Description |
 |------|-------|-------------|
 | `--pattern` | `-p` | The pattern to search for |

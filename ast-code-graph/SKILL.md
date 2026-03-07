@@ -28,6 +28,7 @@ Use this skill when the task involves:
 | **Custom linting** | Enforcing project-specific patterns that standard linters don't cover |
 
 **Don't use this skill when:**
+
 - Searching for a specific string, error message, or config value → use `grep`
 - Finding files by name or extension → use `find`/`fd`
 - The codebase is < 5 files and you can read them all → just read them
@@ -39,6 +40,7 @@ Use this skill when the task involves:
 ast-grep uses **pattern syntax** that looks like the code you're searching for, with `$METAVAR` wildcards that match any AST node.
 
 **Basic pattern search:**
+
 ```bash
 # Find all calls to console.log
 ast-grep -p 'console.log($MSG)' -l js src/
@@ -54,11 +56,13 @@ ast-grep -p 'if ($COND) $STMT' -l js src/
 ```
 
 **Key metavariable syntax:**
+
 - `$NAME` — matches a single AST node (like regex `.`)
 - `$$$ARGS` — matches zero or more nodes (like regex `.*`)
 - `$_` — anonymous match (don't need to reference it)
 
 **Search with rewrite preview:**
+
 ```bash
 # Preview replacing var with const
 ast-grep -p 'var $NAME = $VALUE' -r 'const $NAME = $VALUE' -l js src/
@@ -74,6 +78,7 @@ See [ast-grep-cheatsheet.md](ast-grep-cheatsheet.md) for the full pattern refere
 When you need full AST traversal beyond pattern matching:
 
 **JavaScript/TypeScript — bundled helper:**
+
 ```bash
 # Export list with line numbers
 node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file> --symbols
@@ -83,6 +88,7 @@ node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <
 ```
 
 **Python — bundled graph builder:**
+
 ```bash
 python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph.py <directory> [flags]
 ```
@@ -105,6 +111,7 @@ rule:
 ### Rule file (reusable)
 
 Save as `rules/no-console-log.yml`:
+
 ```yaml
 id: no-console-log
 language: JavaScript
@@ -115,6 +122,7 @@ rule:
 ```
 
 Run:
+
 ```bash
 ast-grep scan --rule rules/no-console-log.yml src/
 ```
@@ -158,6 +166,7 @@ ast-grep -p 'const $NAME = require($MOD)' -l js --json src/
 ### Using bundled scripts
 
 **Python codebases:**
+
 ```bash
 python3 scripts/build-graph.py <dir> --callers <symbol>  # find callers
 python3 scripts/build-graph.py <dir> --unused            # dead code

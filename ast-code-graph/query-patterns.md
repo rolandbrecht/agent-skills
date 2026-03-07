@@ -45,6 +45,7 @@ ast-grep -p 'module.exports = { $$$EXPORTS }' -l js src/
 ```
 
 Then cross-reference with imports:
+
 ```bash
 # For each export, check if it's imported anywhere
 ast-grep -p 'import { $$$NAMES } from $MOD' -l js --json src/ | grep "symbolName"
@@ -57,6 +58,7 @@ python3 scripts/build-graph.py /path/to/project --unused
 ```
 
 **Caveats:**
+
 - Dynamic imports (`require(variable)`) won't be detected by either approach
 - Entry points (e.g., `main.js`, test files) should be excluded from "unused" results
 
@@ -84,7 +86,8 @@ python3 scripts/build-graph.py /path/to/project --depends-on config
 ```
 
 **Visualization:**
-```
+
+```text
 src/digest-generator.js
 ├── src/llm/analyzer.js
 │   └── src/config.js
@@ -151,6 +154,7 @@ python3 scripts/build-graph.py /path/to/project --callers analyzeArticle
 ```
 
 **Risk classification:**
+
 | Callers | Risk | Action |
 |---------|------|--------|
 | 0 | None | Safe to change freely |

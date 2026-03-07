@@ -1,0 +1,6 @@
+# Disable line-length enforcement. 80-char line limits break URLs, long paths, 
+# and make natural language prose difficult to maintain in markdown.
+MD013: false
+
+# Disable strict table column spacing (auto-formatters often disagree on this anyway)
+MD060: false

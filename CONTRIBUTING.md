@@ -5,6 +5,7 @@ Thanks for your interest in contributing! This repository is driven by community
 ## What makes a good skill?
 
 A good agent skill should:
+
 1. Fix exactly ONE problem or scenario.
 2. Be **highly prescriptive** ("Do this", "Don't do that") rather than descriptive.
 3. Be fully self-contained in a directory.
