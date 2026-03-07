@@ -33,6 +33,16 @@ AST parsing and code graph indexing for structural code search, refactoring, dea
 - `scripts/parse-js.mjs` — Cross-platform JS/TS AST parser
 - `scripts/build-graph.py` — Python code graph builder
 
+### [systematic-debugging](./systematic-debugging/)
+
+Use when encountering any bug, test failure, or unexpected behavior. This skill forces the agent to use the scientific method—tracing root causes and injecting boundary telemetry—before attempting any code fixes. It includes a strict "3 Strikes" escalation protocol to prevent architecture-breaking guesswork.
+
+**Files:**
+
+- `SKILL.md` — The 3-phase systematic debugging framework
+- `references/bug-report.md` — The 3-strike escalation template
+- `references/tracing.md` — Actionable boundary-logging patterns (frontend, backend, DB, CI)
+
 ## Installation
 
 ### Via skills.sh (Recommended)
@@ -41,7 +51,7 @@ The easiest way to install these skills is using [skills.sh](https://skills.sh/)
 
 ```bash
 # Example: Install the ast-code-graph skill
-npx skills.sh install github.com/rolandbrecht/agent-skills/ast-code-graph
+npx skills install github.com/rolandbrecht/agent-skills/ast-code-graph
 ```
 
 ### Manual Installation
