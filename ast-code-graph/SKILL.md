@@ -35,6 +35,19 @@ Use this skill when the task involves:
 
 ---
 
+## Prerequisites
+
+Before using this tool for searches, you **MUST check** if `ast-grep` is installed natively on the system:
+
+```bash
+which ast-grep || which sg
+```
+
+If it is installed, use the native binary directly for semantic searches. **Do not** attempt to run it via Docker containers or complex wrapper scripts unless absolutely necessary.
+
+---
+
+
 ## Phase 1: Search — Find Code by Structure
 
 ### ast-grep (recommended — all languages)
