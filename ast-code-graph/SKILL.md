@@ -120,10 +120,12 @@ While `ast-grep` + JSON pipelines are powerful, this skill includes bundled scri
 
 *Use these particularly when checking for dead code or circular dependencies.*
 
+> **🤖 Note to AI Agent:** When calling these bundled scripts, you must construct an **absolute path** by replacing `<SKILL_DIR>` with the absolute directory path where this `SKILL.md` file is located. Do not execute these with relative paths from the user's project root, or they will fail.
+
 **Python codebases:**
 
 ```bash
-python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph.py <directory> [flags]
+python3 <SKILL_DIR>/scripts/build-graph.py <directory> [flags]
 
 # Common Flags:
 # --callers <symbol>  (find direct and transitive callers)
@@ -136,7 +138,7 @@ python3 /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/build-graph
 
 ```bash
 # Export a quick symbol list with line numbers
-node /home/user/.gemini/antigravity/skills/ast-code-graph/scripts/parse-js.mjs <file> --symbols
+node <SKILL_DIR>/scripts/parse-js.mjs <file> --symbols
 ```
 
 ---
