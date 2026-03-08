@@ -1,6 +1,6 @@
 ---
 name: self-reflection
-description: Execute this meta-skill ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk. You MUST trigger this skill to codify hard-won lessons into reusable project rules (saving them to llms.txt, .cursorrules, CLAUDE.md or a new SKILL.md). Do NOT close a complex task without running this skill to ensure future agents don't make the same mistakes you did!
+description: Execute this meta-skill ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk. You MUST trigger this skill to codify hard-won lessons into reusable project rules (saving them to project-specific AI instruction files or a new SKILL.md). Do NOT close a complex task without running this skill to ensure future agents don't make the same mistakes you did!
 ---
 
 # Self-Reflection (Continuous Improvement Protocol)
@@ -40,11 +40,11 @@ If the answer to *any* of the above is **"Yes"**, you MUST NOT just mention it t
 
 Based on your internal reflection, choose the appropriate output format below and write the rule. Try to generalize the lesson.
 
-### 1. Project-Specific Rules (`llms.txt` / `.cursorrules` / `CLAUDE.md`)
+### 1. Project-Specific Rules (AI Instruction Files)
 
 Use this when you learned a specific convention for the current repository.
 
-*If none of these files exist yet, ask the user if they'd like you to create one (preferring `CLAUDE.md` or `llms.txt`).*
+*If no AI instruction file exists yet, ask the user if they'd like you to create one (preferring standard formats like `llms.txt`).*
 
 - **Example Good Lesson:** "When creating new API endpoints, ALWAYS include the `@require_tenant` decorator, and never return the raw SQLAlchemy model. Always use a Pydantic `UserOut` schema."
 - **Example Bad Lesson (Too Specific):** "I fixed the `POST /users` route by adding `@require_tenant` to line 42."
@@ -56,7 +56,7 @@ Use this when you learned a specific convention for the current repository.
 Use this when you developed a multi-step workflow or a reliable, highly-reusable way to accomplish a complex task.
 
 - **Example Good Lesson:** Creating a new skill called `safe-db-migration` that details the 5 exact steps required to pull the staging DB, run Alembic locally, and verify the downgrade path.
-- **Example Bad Lesson:** Appending a 500-line bash script directly into `.cursorrules`.
+- **Example Bad Lesson:** Appending a 500-line bash script directly into the project's AI instruction file.
 
 **Action:** Create a new `SKILL.md` inside a dedicated `skills/[skill-name]/` directory. This gives future agents a prescriptive, step-by-step guide.
 
