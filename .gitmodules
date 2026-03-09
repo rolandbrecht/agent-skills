@@ -1,3 +1,0 @@
-[submodule ".external-skills/claude-plugins-official"]
-	path = .external-skills/claude-plugins-official
-	url = https://github.com/anthropics/claude-plugins-official.git
