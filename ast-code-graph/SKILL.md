@@ -65,7 +65,6 @@ If it is installed, use the native binary directly for semantic searches. **Do n
 
 ---
 
-
 ## Phase 1: Search — Find Code by Structure
 
 ### ast-grep (recommended — all languages)
