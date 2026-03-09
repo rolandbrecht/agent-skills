@@ -67,6 +67,21 @@ A "meta-skill" executed at the end of complex tasks. It solves the LLM "stateles
 npx skills add rolandbrecht/agent-skills --skill self-reflection
 ```
 
+### [structural-refactor](./structural-refactor/)
+
+Use this skill for any structural code search or replacement task — it is the right choice whenever grep/sed would feel clunky or risky. Ideal for cross-language refactoring, Python 2 → 3 migrations, and modernizing Python 3 idioms.
+
+**Files:**
+
+- `SKILL.md` — Main skill instructions
+- `references/hole-syntax.md` — Full comby hole type reference
+- `references/language-matchers.md` — Supported comby language matchers
+
+```bash
+# Install the structural-refactor skill
+npx skills add rolandbrecht/agent-skills --skill structural-refactor
+```
+
 ## Project Context Files
 
 Optional entry-point files for your project root. They provide a quick decision tree and key rules so the agent knows when to trigger which skill.
