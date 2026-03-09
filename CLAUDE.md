@@ -16,8 +16,14 @@ As an AI coding agent, you MUST follow these directives when working in this rep
 **Skill to use:** `systematic-debugging`
 **Directive:** You MUST NOT guess the solution or propose random fixes. You are constrained to the "No fixes without root cause" protocol. You must trace the error boundary, heavily utilize `grep_search` to understand context, and prove the failure with a reproduction script before any code modification. If 3 fixes fail, you MUST escalate and stop modifying code.
 
-## 3. Post-Task Reflection
+## 3. Structural Code Refactoring
+
+**Trigger:** ANY time you need to do bulk structural replacements across files — renaming function arguments at call sites, migrating deprecated API call shapes, rewriting patterns that regex/sed would botch (nested parens, multiline, string boundary issues), extracting code locations with file+line output. Also trigger for Python 2 → 3 migrations.
+**Skill to use:** `structural-refactor`
+**Directive:** Do NOT use `sed` or raw regex for structural code changes. Use `comby` for cross-language pattern replacement, `2to3` for Python 2 → 3 migrations, and `pyupgrade` to modernize Python 3 idioms. Always run a preview step (`-diff` or dry-run) before applying changes in-place.
+
+## 4. Post-Task Reflection
 
 **Trigger:** ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk.
 **Skill to use:** `self-reflection`
-**Directive:** You MUST trigger this skill before closing a complex task to codify hard-won lessons into reusable project rules (saving them to `CLAUDE.md`, `.cursorrules`, etc.). Future agents should not have to repeat your mistakes.
+**Directive:** You MUST trigger this skill before closing a complex task to codify hard-won lessons into reusable project rules (saving them to `AGENTS.md`, `.cursorrules`, etc.). Future agents should not have to repeat your mistakes.

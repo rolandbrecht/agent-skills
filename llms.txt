@@ -9,6 +9,10 @@
 [Trigger]: AUTOMATICALLY anytime you encounter a stack trace, test failure, production bug, or unexpected behavior.
 [Skill Requirement]: You must use the `systematic-debugging` skill. No fixes without a root cause investigation first. Do not guess. Do not supply quick patches. You must reproduce the bug using a script, heavily utilize `grep_search` to understand context, and trace boundaries. Escalation is MANDATORY after 3 failed fix attempts.
 
-3. Continuous Improvement
+3. Structural Code Refactoring
+[Trigger]: ANY time you need to do bulk structural replacements across files — renaming function arguments at call sites, migrating deprecated API call shapes, rewriting patterns that regex/sed would botch (nested parens, multiline, string boundary issues), extracting code locations with file+line output. Also trigger for Python 2 → 3 migrations.
+[Skill Requirement]: You must use the `structural-refactor` skill. Do NOT use `sed` or raw regex for structural code changes. Use `comby` for cross-language pattern replacement, `2to3` for Python 2 → 3 migrations, and `pyupgrade` to modernize Python 3 idioms. Always run a preview step (`-diff` or dry-run) before applying changes in-place.
+
+4. Continuous Improvement
 [Trigger]: ALWAYS at the end of complex tasks, debugging sessions, or when learning a new project codebase quirk.
 [Skill Requirement]: You must use the `self-reflection` skill before closing a complex task. Codify the hard-won project lessons into markdown format so future AI agents do not repeat the same mistakes.
