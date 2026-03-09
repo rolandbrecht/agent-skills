@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SCRIPT = join(__dirname, '..', 'ast-code-graph', 'scripts', 'parse-js.mjs');
+const SCRIPT = join(__dirname, '..', 'scripts', 'parse-js.mjs');
 const FIXTURES = join(__dirname, 'fixtures');
 
 function run(file, ...flags) {

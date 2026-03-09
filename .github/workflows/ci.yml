@@ -30,11 +30,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
         
     - name: Run JS AST parser tests
+      working-directory: ast-code-graph
       run: |
         npm install
         node --test tests/test-parse-js.mjs
       
     - name: Run Python graph builder tests
+      working-directory: ast-code-graph
       run: python3 -m unittest tests/test_build_graph.py -v
 
   lint:

@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "ast-code-graph" / "scripts" / "build-graph.py"
+SCRIPT = ROOT / "scripts" / "build-graph.py"
 FIXTURES = ROOT / "tests" / "fixtures"
 
 
