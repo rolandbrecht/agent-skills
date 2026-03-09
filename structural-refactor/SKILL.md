@@ -56,12 +56,13 @@ right one for the job — they're not competitors, they're specialists.
 `comby` understands code shape: balanced delimiters, string boundaries, comment regions.
 Unlike `sed`, you write patterns that look like the code you're targeting.
 
-```
+```text
 Match:   request.get(':[url]')
 Rewrite: request({ url: ':[url]', method: 'get' })
 ```
 
 **Wins over grep/sed when:**
+
 - The pattern spans multiple lines or contains nested brackets
 - The same text appears in comments/strings and you want to skip it
 - You need to capture and rearrange subexpressions
@@ -140,7 +141,7 @@ See [references/language-matchers.md](references/language-matchers.md) for all ~
 
 For several related patterns (e.g., an API overhaul), use a templates directory:
 
-```
+```text
 migrations/
 ├── get-to-fetch/
 │   ├── match      ← plain text match template
@@ -228,7 +229,7 @@ comby would struggle with: `print >> sys.stderr`, trailing commas, bare `print`,
 Use `2to3` instead of comby when migrating Python 2 code. Use comby for cross-language
 or library-API refactoring in Python 3 codebases.
 
-### Installation
+### 2to3 Installation
 
 Included with Python. Verify:
 
@@ -254,7 +255,7 @@ Each `-f` flag applies a specific transformation:
 
 Run `2to3 --list-fixes` for the full list.
 
-### Usage
+### 2to3 Usage
 
 ```bash
 # Preview diffs without writing (safe)
@@ -313,14 +314,14 @@ python -m pytest lib/
 it is about moving from old Python 3 style to current best practices. Use it on codebases
 that are already Python 3 but were written a long time ago.
 
-### Installation
+### pyupgrade Installation
 
 ```bash
 pip install pyupgrade
 # or: pipx install pyupgrade
 ```
 
-### Usage
+### pyupgrade Usage
 
 ```bash
 # Upgrade to minimum Python 3.8+ idioms

@@ -7,13 +7,14 @@
 Matches zero or more characters. Crucially, it respects balanced delimiters: if the hole
 is inside `()`, it will not consume the closing `)`.
 
-```
+```text
 Template: foo(:[a], :[b])
 Input:    foo(bar(1, 2), baz)
 Match:    a = "bar(1, 2)", b = "baz"
 ```
 
 This is your default hole. Use it for:
+
 - Argument lists: `someFunc(:[args])`
 - Expression values: `const x = :[val]`
 - Block bodies: `{ :[body] }`
@@ -23,7 +24,7 @@ This is your default hole. Use it for:
 
 Matches one or more characters matching `[a-zA-Z0-9_]` — i.e., a valid identifier.
 
-```
+```text
 Template: :[[name]] = :[val]
 Input:    myVar = 42 + other
 Match:    name = "myVar", val = "42 + other"
@@ -36,14 +37,15 @@ Prevents capturing spaces, operators, or nested calls.
 
 Matches using a PCRE regular expression. The regex is anchored to the hole's extent.
 
-```
+```text
 Template: setTimeout(:[fn], :[ms~[0-9]+])
 Input:    setTimeout(callback, 500)   ← matches
 Input:    setTimeout(callback, delay) ← does NOT match
 ```
 
 Examples:
-```
+
+```text
 :[n~[0-9]+]           Integer literals
 :[s~"[^"]*"]          Double-quoted strings
 :[id~[a-z][a-zA-Z]+]  camelCase identifiers
@@ -55,7 +57,7 @@ Examples:
 Same matching behavior as `:[x]` but the entire hole (including surrounding whitespace)
 can be absent. Useful when a pattern has optional components.
 
-```
+```text
 Template: db.query(:[sql], :[?callback])
 Input:    db.query("SELECT *")           ← matches, callback = ""
 Input:    db.query("SELECT *", done)     ← matches, callback = "done"
@@ -73,7 +75,7 @@ Useful when you want tight expression matching without capturing trailing whites
 In the rewrite template (not the match template), `:[id()]` generates a random
 alphanumeric identifier. Use when you need to introduce a fresh unique variable name.
 
-```
+```text
 Template: let :[x] = :[val]
 Rewrite:  const :[id()] = :[val]; const :[x] = :[id()]
 ```
@@ -93,7 +95,7 @@ content you don't care about.
 | `:[_]` | Zero or more chars | Same as `...` |
 | `:[~regex]` | Regex, no binding | Anonymous version of `:[x~regex]` |
 
-```
+```bash
 # Find any function call with at least one argument, don't care what
 comby 'someFunc(..., :[last])' '' .js -match-only
 ```
@@ -167,7 +169,7 @@ After a structural match, `where` clauses filter results. Pass them via `-rule`.
 
 For large migrations, write templates to files instead of shell args:
 
-```
+```text
 migrations/rename-api/
 ├── match    (contains the match template, plain text)
 ├── rewrite  (contains the rewrite template, plain text)
@@ -188,14 +190,16 @@ patterns that must span multiple lines at the top level, put them in template fi
 (avoids shell newline handling issues).
 
 **match file:**
-```
+
+```text
 function :[[name]](:[args]) {
   :[body]
 }
 ```
 
 **rewrite file:**
-```
+
+```text
 const :[[name]] = (:[args]) => {
   :[body]
 }
