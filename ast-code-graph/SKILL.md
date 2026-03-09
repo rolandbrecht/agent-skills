@@ -1,7 +1,23 @@
 ---
 name: ast-code-graph
-description: Use this skill ANY time you need to search for code structure, refactor symbols, analyze impact, find dead code, or trace dependencies. Trigger this for queries like "find all calls to fetch", "rename oldApi to newApi safely", "find unused imports", or "what modules depend on X?". It uses AST parsing to understand code semantically, which is vastly superior to and safer than text-based grep for code modifications.
----
+description: >
+  ALWAYS invoke this skill BEFORE using grep for any structural code analysis. Trigger on
+  ANY of these patterns: **Structural pattern search:** "useEffect without dependency
+  array", "async functions without try-catch", "User.objects.get() without exception
+  handling", "fetch() calls outside src/api/", "console.log inside class methods", "route
+  handlers missing error handling" **Bulk code migration/transformation:** wrap all async
+  handlers, replace all X() calls with Y(), add error handling to all route handlers,
+  rewrite deprecated API patterns across hundreds of files **Dependency & impact analysis:**
+  "what does analyzePayment depend on", "blast radius of changing X", "which modules depend
+  on ./lib/database.js", "direct and transitive dependencies" **Safe renaming:** "rename
+  fetchUserData to getUserData safely", rename across TypeScript/JavaScript codebase **Dead
+  code & circular imports:** "exports never imported anywhere", "circular imports causing
+  webpack bundle", unused exports, which npm dependencies are actually used in source
+  **ast-grep rules:** write an ast-grep rule, sg pattern, ast-grep syntax Trigger keywords:
+  try-catch, useEffect, async without, circular imports, safe rename, blast radius, bulk
+  migration, never imported, unused exports, ast-grep, enforce pattern, structural search,
+  depends on, which modules. Do NOT trigger for: grep-able string searches, file-name
+  lookups, reading READMEs, writing regex, CSV/data scripts.---
 
 # AST & Code Graph Indexing
 
@@ -76,6 +92,21 @@ ast-grep -p 'if ($COND) $STMT' -l js src/
 - `$$$ARGS` — matches **zero or more** nodes (like regex `.*`). Example: `foo($$$ARGS)` matches `foo()`, `foo(a)`, and `foo(a, b)`. **This is the most common pitfall! Default to `$$$` when matching arguments or block bodies unless you strictly want one node.**
 - `$_` — anonymous match (when you don't need to reference it later).
 
+**TypeScript generic calls require a separate pattern:**
+
+In TypeScript/TSX, a call like `useState<string>('')` has `<string>` as a separate `type_arguments` AST node. The pattern `useState($$$ARGS)` will NOT match it. You need two passes for full coverage:
+
+```bash
+# Non-generic calls (works for all languages)
+ast-grep -p 'useState($$$ARGS)' src/
+
+# Generic TypeScript calls like useState<T>()
+ast-grep -p 'useState<$T>($$$ARGS)' -l tsx src/
+ast-grep -p 'useState<$T>($$$ARGS)' -l ts src/
+```
+
+Use `$$$T` instead of `$T` if the type argument can be a union like `string | null`.
+
 **Search with rewrite preview:**
 
 ```bash
@@ -125,6 +156,21 @@ Here are detailed methodologies for solving complex structural problems:
 4. **Apply**: Add `--interactive` to selectively apply changes, or remove `--interactive` if you're 100% confident (though you should usually trust but verify).
 5. **Verify**: Re-run the search pattern `ast-grep -p '<pattern>'` and ensure it returns 0 matches.
 
+**Renaming a symbol requires multiple passes** — function definitions, call sites, and import/export statements are structurally distinct AST node types, so a single pattern won't catch all of them:
+
+```bash
+# Pass 1: rename the definition
+ast-grep -p 'function oldName($$$P) { $$$B }' -r 'function newName($$$P) { $$$B }' -l ts src/
+
+# Pass 2: rename all call sites (also catches bare references like arr.map(oldName))
+ast-grep -p 'oldName($$$ARGS)' -r 'newName($$$ARGS)' -l ts src/
+
+# Pass 3: rename named imports
+ast-grep -p 'import { oldName } from $MOD' -r 'import { newName } from $MOD' -l ts src/
+```
+
+Note: AST matching is exact on identifiers, so `oldNameHelper` will NOT be affected — unlike a naive `sed` replace.
+
 ---
 
 ## Phase 4: Bundled Graph Builders (Fallback)
@@ -163,7 +209,7 @@ node <SKILL_DIR>/scripts/parse-js.mjs <file> --symbols
 | Find all calls to `foo()` | `ast-grep -p 'foo($$$ARGS)' src/` |
 | Find function definitions | `ast-grep -p 'function $NAME($$$P) { $$$B }' src/` |
 | Find unused imports | `ast-grep scan --inline-rules '...' src/` |
-| Rename `oldFn` → `newFn` | `ast-grep -p 'oldFn($$$A)' -r 'newFn($$$A)' --interactive src/` |
+| Rename `oldFn` → `newFn` | 3 passes: definition, call sites, imports (see Workflow B) |
 | Convert `var` → `const` | `ast-grep -p 'var $N = $V' -r 'const $N = $V' --interactive src/` |
 | JSON output for scripting | `ast-grep -p '<pattern>' --json src/ > out.json` |
 | Check change impact | Build graph → find all transitive callers (reverse BFS) |

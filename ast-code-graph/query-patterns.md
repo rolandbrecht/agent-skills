@@ -24,7 +24,7 @@ ast-grep -p 'analyzeArticle($$$ARGS)' -l js --json src/
 ### Graph approach (exhaustive)
 
 ```bash
-python3 scripts/build-graph.py /path/to/project --callers analyzeArticle
+python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --callers analyzeArticle
 ```
 
 **Why both?** ast-grep finds pattern matches instantly but may miss indirect calls (e.g., `const fn = analyzeArticle; fn()`). The graph approach traces through variable assignments.
@@ -54,7 +54,7 @@ ast-grep -p 'import { $$$NAMES } from $MOD' -l js --json src/ | grep "symbolName
 ### Graph approach (automated)
 
 ```bash
-python3 scripts/build-graph.py /path/to/project --unused
+python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --unused
 ```
 
 **Caveats:**
@@ -82,7 +82,7 @@ ast-grep -p 'import $$$_ from "./config"' -l js src/
 ### Graph approach (full tree)
 
 ```bash
-python3 scripts/build-graph.py /path/to/project --depends-on config
+python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --depends-on config
 ```
 
 **Visualization:**
@@ -129,7 +129,7 @@ ast-grep -p 'await fetch($URL)' -r 'await safeFetch($URL)' -l js --interactive s
 ### Graph approach (required)
 
 ```bash
-python3 scripts/build-graph.py /path/to/project --cycles
+python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --cycles
 ```
 
 This runs DFS cycle detection on the import graph. ast-grep can't detect cycles since it processes files independently without building a dependency graph.
@@ -150,7 +150,7 @@ ast-grep -p 'analyzeArticle($$$ARGS)' -l js src/
 ### Graph approach (transitive impact)
 
 ```bash
-python3 scripts/build-graph.py /path/to/project --callers analyzeArticle
+python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --callers analyzeArticle
 ```
 
 **Risk classification:**

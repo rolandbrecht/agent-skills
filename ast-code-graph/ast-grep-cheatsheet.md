@@ -108,6 +108,34 @@ ast-grep -p 'var $NAME = $VALUE' -l js src/
 ast-grep -p 'const $NAME = $VALUE' -l js src/
 ```
 
+### TypeScript-specific patterns
+
+```bash
+# Generic function calls — useState<string>() requires TWO patterns for full coverage:
+ast-grep -p 'fn($$$ARGS)' -l ts src/          # non-generic calls
+ast-grep -p 'fn<$T>($$$ARGS)' -l tsx src/     # generic calls (TSX)
+ast-grep -p 'fn<$$$T>($$$ARGS)' -l tsx src/   # union type args like fn<A | B>()
+
+# Interface declarations
+ast-grep -p 'interface $NAME { $$$BODY }' -l ts src/
+ast-grep -p 'interface $NAME extends $$$BASES { $$$BODY }' -l ts src/
+
+# Type aliases
+ast-grep -p 'type $NAME = $TYPE' -l ts src/
+ast-grep -p 'type $NAME<$$$PARAMS> = $TYPE' -l ts src/
+
+# Typed arrow functions
+ast-grep -p 'const $NAME = ($$$PARAMS): $RET => $BODY' -l ts src/
+
+# Class with access modifiers
+ast-grep -p 'class $NAME { $$$BODY }' -l ts src/
+ast-grep -p 'private $NAME($$$PARAMS): $RET { $$$BODY }' -l ts src/
+
+# Decorators (TypeScript)
+ast-grep -p '@$DECORATOR($$$ARGS)' -l ts src/
+ast-grep -p '@$DECORATOR' -l ts src/
+```
+
 ### Python
 
 ```bash
