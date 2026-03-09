@@ -63,6 +63,11 @@ which ast-grep || which sg
 
 If it is installed, use the native binary directly for semantic searches. **Do not** attempt to run it via Docker containers or complex wrapper scripts unless absolutely necessary.
 
+If it is not installed, you can install it using one of the following methods depending on the OS:
+- Node.js: `npm install -g @ast-grep/cli`
+- MacOS (Homebrew): `brew install ast-grep`
+- Rust (Cargo): `cargo install ast-grep --locked`
+
 ---
 
 ## Phase 1: Search — Find Code by Structure
