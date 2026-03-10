@@ -69,6 +69,13 @@ If it is not installed, you can install it using one of the following methods de
 - MacOS (Homebrew): `brew install ast-grep`
 - Rust (Cargo): `cargo install ast-grep --locked`
 
+### Script Dependencies
+
+The bundled scripts for graph building and AST parsing require additional dependencies:
+
+- **JS/TS Parsing (`scripts/parse-js.mjs`)**: Requires Node.js v14+, `acorn`, and `acorn-walk`. Before running, check if they are installed globally or in the `ast-code-graph` directory. If not, you can install them by running `npm install acorn acorn-walk` in the `ast-code-graph` directory or `npm install -g acorn acorn-walk` globally.
+- **Python Graph Builder (`scripts/build-graph.py`)**: Requires Python 3.8+ (uses standard library only, no external dependencies).
+
 ---
 
 ## Phase 1: Search — Find Code by Structure
