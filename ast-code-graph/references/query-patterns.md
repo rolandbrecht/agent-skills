@@ -156,7 +156,7 @@ python3 <SKILL_DIR>/scripts/build-graph.py /path/to/project --callers analyzeArt
 **Risk classification:**
 
 | Callers | Risk | Action |
-|---------|------|--------|
+| --------- | ------ | -------- |
 | 0 | None | Safe to change freely |
 | 1–3 | Low | Review each caller |
 | 4–10 | Medium | Test thoroughly |
@@ -231,7 +231,7 @@ ast-grep scan --rule rules/my-rule.yml src/
 ## Pattern Selection Guide
 
 | Question | Best tool | Pattern |
-|----------|-----------|---------|
+| ---------- | ----------- | --------- |
 | "Who calls this function?" | ast-grep (quick) / graph (exhaustive) | #1 |
 | "Is this code used anywhere?" | graph | #2 |
 | "What does this module depend on?" | graph | #3 |

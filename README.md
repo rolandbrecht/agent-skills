@@ -27,9 +27,9 @@ AST parsing and code graph indexing for structural code search, refactoring, dea
 **Files:**
 
 - `SKILL.md` — Main skill instructions
-- `ast-grep-cheatsheet.md` — ast-grep CLI and pattern reference
-- `graph-schema.md` — Code graph node/edge schema
-- `query-patterns.md` — Query patterns cookbook
+- `references/ast-grep-cheatsheet.md` — ast-grep CLI and pattern reference
+- `references/graph-schema.md` — Code graph node/edge schema
+- `references/query-patterns.md` — Query patterns cookbook
 - `scripts/parse-js.mjs` — Cross-platform JS/TS AST parser
 - `scripts/build-graph.py` — Python code graph builder
 

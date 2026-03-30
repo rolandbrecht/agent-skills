@@ -5,7 +5,7 @@ The code graph represents a codebase as a directed graph of **nodes** (symbols) 
 ## Node Types
 
 | Type | Description | Key Properties |
-|------|-------------|----------------|
+| ------ | ------------- | ---------------- |
 | `Module` | A source file | `file`, `language` |
 | `Class` | Class definition | `file`, `line`, `name`, `exported` |
 | `Function` | Function/method definition | `file`, `line`, `name`, `exported`, `async`, `params` |
@@ -28,7 +28,7 @@ For module-level nodes, the ID is just the file path: `src/config.js`.
 ## Edge Types
 
 | Type | From → To | Meaning |
-|------|-----------|---------|
+| ------ | ----------- | --------- |
 | `calls` | Function → Function | Function A calls function B |
 | `imports` | Module → Module | Module A imports from module B |
 | `extends` | Class → Class | Class A extends class B |
@@ -41,16 +41,16 @@ For module-level nodes, the ID is just the file path: `src/config.js`.
 
 ```mermaid
 erDiagram
-    Module ||--o{ Function : "defines"
-    Module ||--o{ Class : "defines"
-    Module ||--o{ Variable : "defines"
-    Module ||--o{ Import : "has"
-    Module ||--o{ Export : "has"
-    Module }o--o{ Module : "imports"
-    Class ||--o{ Function : "member-of"
-    Class }o--o| Class : "extends"
-    Function }o--o{ Function : "calls"
-    Function }o--o{ Variable : "references"
+    ModuleNode ||--o{ FunctionNode : "defines"
+    ModuleNode ||--o{ ClassNode : "defines"
+    ModuleNode ||--o{ VariableNode : "defines"
+    ModuleNode ||--o{ ImportNode : "has"
+    ModuleNode ||--o{ ExportNode : "has"
+    ModuleNode }o--o{ ModuleNode : "imports"
+    ClassNode ||--o{ FunctionNode : "member-of"
+    ClassNode }o--o| ClassNode : "extends"
+    FunctionNode }o--o{ FunctionNode : "calls"
+    FunctionNode }o--o{ VariableNode : "references"
 ```
 
 ## JSON Representation

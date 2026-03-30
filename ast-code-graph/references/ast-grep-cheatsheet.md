@@ -19,7 +19,7 @@ ast-grep matches **AST nodes**, not text. You write patterns that look like real
 ### Metavariables
 
 | Syntax | Matches | Analogy |
-|--------|---------|---------|
+| -------- | --------- | --------- |
 | `$NAME` | Exactly one AST node | regex `.+` |
 | `$$$LIST` | Zero or more AST nodes | regex `.*` |
 | `$_` | One node (anonymous, no capture) | regex `.` |
@@ -52,7 +52,7 @@ ast-grep -p '<pattern>' --json [paths...]
 **Key flags:**
 
 | Flag | Short | Description |
-|------|-------|-------------|
+| ------ | ------- | ------------- |
 | `--pattern` | `-p` | The pattern to search for |
 | `--rewrite` | `-r` | Replacement pattern (uses same metavars) |
 | `--lang` | `-l` | Language (js, ts, py, rust, go, java, etc.) |

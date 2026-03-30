@@ -1,23 +1,9 @@
 ---
 name: ast-code-graph
 description: >
-  ALWAYS invoke this skill BEFORE using grep for any structural code analysis.
-  Trigger on ANY of these patterns:
-
-  **Structural pattern search:** "useEffect without dependency array", "async functions without try-catch", "User.objects.get() without exception handling", "fetch() calls outside src/api/", "console.log inside class methods", "route handlers missing error handling"
-
-  **Bulk code migration/transformation:** wrap all async handlers, replace all X() calls with Y(), add error handling to all route handlers, rewrite deprecated API patterns across hundreds of files
-
-  **Dependency & impact analysis:** "what does analyzePayment depend on", "blast radius of changing X", "which modules depend on ./lib/database.js", "direct and transitive dependencies"
-
-  **Safe renaming:** "rename fetchUserData to getUserData safely", rename across TypeScript/JavaScript codebase
-
-  **Dead code & circular imports:** "exports never imported anywhere", "circular imports causing webpack bundle", unused exports, which npm dependencies are actually used in source
-
-  **ast-grep rules:** write an ast-grep rule, sg pattern, ast-grep syntax
-
+  Use this skill ANY time you need to search for code structure, refactor symbols, analyze impact, find dead code, or trace dependencies. ALWAYS invoke BEFORE using grep for structural code analysis.
+  Trigger categories: structural pattern search (e.g. useEffect without deps, async without try-catch, fetch calls outside src/api), bulk code migration/transformation (wrap handlers, replace API calls), dependency & impact analysis (blast radius, transitive deps, which modules depend on X), safe renaming across codebases, dead code & circular import detection, ast-grep rule authoring.
   Trigger keywords: try-catch, useEffect, async without, circular imports, safe rename, blast radius, bulk migration, never imported, unused exports, ast-grep, enforce pattern, structural search, depends on, which modules.
-
   Do NOT trigger for: grep-able string searches, file-name lookups, reading READMEs, writing regex, CSV/data scripts.
 ---
 
@@ -31,12 +17,25 @@ Text-based search (`grep`, `ripgrep`) finds string matches. AST-based analysis u
 
 **Core principle:** When the question is about *code structure*, use AST analysis. When the question is about *text content*, use grep.
 
+## Trigger Patterns
+
+Detailed examples of when to trigger this skill:
+
+| Category | Example queries |
+| ---------- | ---------------- |
+| **Structural pattern search** | "useEffect without dependency array", "async functions without try-catch", "User.objects.get() without exception handling", "fetch() calls outside src/api/", "console.log inside class methods", "route handlers missing error handling" |
+| **Bulk code migration** | wrap all async handlers, replace all X() calls with Y(), add error handling to all route handlers, rewrite deprecated API patterns across hundreds of files |
+| **Dependency & impact analysis** | "what does analyzePayment depend on", "blast radius of changing X", "which modules depend on ./lib/database.js", "direct and transitive dependencies" |
+| **Safe renaming** | "rename fetchUserData to getUserData safely", rename across TypeScript/JavaScript codebase |
+| **Dead code & circular imports** | "exports never imported anywhere", "circular imports causing webpack bundle", unused exports, which npm dependencies are actually used in source |
+| **ast-grep rules** | write an ast-grep rule, sg pattern, ast-grep syntax |
+
 ## When to Use
 
 Use this skill when the task involves:
 
 | Task | Why AST beats grep |
-|------|--------------------|
+| ------ | -------------------- |
 | **Refactoring / renaming** | Grep finds the string in comments and strings too; AST finds only the symbol |
 | **Dead code detection** | Grep can't tell if an export is actually imported elsewhere |
 | **Dependency tracing** | "What modules does X depend on?" requires understanding `import`/`require` |
@@ -131,7 +130,7 @@ ast-grep -p 'var $NAME = $VALUE' -r 'const $NAME = $VALUE' -l js src/
 ast-grep -p 'var $NAME = $VALUE' -r 'const $NAME = $VALUE' -l js --interactive src/
 ```
 
-See [ast-grep-cheatsheet.md](ast-grep-cheatsheet.md) for the full pattern reference.
+See [ast-grep-cheatsheet.md](references/ast-grep-cheatsheet.md) for the full pattern reference.
 
 ---
 
@@ -219,7 +218,7 @@ node <SKILL_DIR>/scripts/parse-js.mjs <file> --symbols
 ## Quick Reference
 
 | I want to... | ast-grep command |
-|---------------|-----------------|
+| --------------- | ----------------- |
 | Find all calls to `foo()` | `ast-grep -p 'foo($$$ARGS)' src/` |
 | Find function definitions | `ast-grep -p 'function $NAME($$$P) { $$$B }' src/` |
 | Find unused imports | `ast-grep scan --inline-rules '...' src/` |
@@ -230,8 +229,8 @@ node <SKILL_DIR>/scripts/parse-js.mjs <file> --symbols
 
 ## Supporting Files
 
-- **[ast-grep-cheatsheet.md](ast-grep-cheatsheet.md)** — Full ast-grep pattern and CLI reference
-- **[graph-schema.md](graph-schema.md)** — Node and edge type definitions with ER diagram
-- **[query-patterns.md](query-patterns.md)** — Detailed cookbook of query patterns with examples
+- **[ast-grep-cheatsheet.md](references/ast-grep-cheatsheet.md)** — Full ast-grep pattern and CLI reference
+- **[graph-schema.md](references/graph-schema.md)** — Node and edge type definitions with ER diagram
+- **[query-patterns.md](references/query-patterns.md)** — Detailed cookbook of query patterns with examples
 - **[scripts/parse-js.mjs](scripts/parse-js.mjs)** — Cross-platform Node.js script for JS/TS AST parsing
 - **[scripts/build-graph.py](scripts/build-graph.py)** — Python code graph builder
