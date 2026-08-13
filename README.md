@@ -38,6 +38,27 @@ AST parsing and code graph indexing for structural code search, refactoring, dea
 npx skills add rolandbrecht/agent-skills --skill ast-code-graph
 ```
 
+### [ast-grep](./ast-grep/)
+
+Structural code search, lint, and rewrite with [ast-grep](https://ast-grep.github.io/): pattern-based codemods, custom YAML lint rules, multi-pass symbol renaming, and code outline exploration. Includes a complete CLI reference, pattern syntax with verified pitfalls, and a rule-authoring guide — all verified against a real ast-grep binary.
+
+**Primary tool:** [ast-grep](https://ast-grep.github.io/) for AST-based search and rewrite across 25+ languages.
+
+**Files:**
+
+- `SKILL.md` — Main skill instructions (tool selection, quick start, workflows, exit codes)
+- `references/cli-reference.md` — Complete CLI reference for all subcommands and flags
+- `references/pattern-syntax.md` — Metavariables, pattern objects, strictness, pitfalls
+- `references/rule-yaml.md` — YAML rules, rule object, sgconfig.yml, testing, CI
+- `references/pattern-cookbook.md` — Ready-to-use patterns and recipes for JS/TS/Python
+- `scripts/install.sh` — Multi-package-manager installer
+- `scripts/json-summary.py` — Summarizer for ast-grep JSON output
+
+```bash
+# Install the ast-grep skill
+npx skills add rolandbrecht/agent-skills --skill ast-grep
+```
+
 ### [systematic-debugging](./systematic-debugging/)
 
 Use when encountering any bug, test failure, or unexpected behavior. This skill forces the agent to use the scientific method—tracing root causes and injecting boundary telemetry—before attempting any code fixes. It includes a strict "3 Strikes" escalation protocol to prevent architecture-breaking guesswork.

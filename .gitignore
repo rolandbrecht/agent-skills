@@ -2,3 +2,4 @@ ast-code-graph/node_modules/
 .DS_Store
 Thumbs.db
 *.log
+__pycache__/

@@ -39,6 +39,10 @@ jobs:
       working-directory: ast-code-graph
       run: python3 -m unittest tests/test_build_graph.py -v
 
+    - name: Run ast-grep json-summary tests
+      working-directory: ast-grep
+      run: python3 -m unittest tests/test_json_summary.py -v
+
   lint:
     name: Lint Markdown
     runs-on: ubuntu-latest
