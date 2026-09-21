@@ -1,18 +1,23 @@
 ---
 name: ast-grep
+user-invocable: false
 description: >
-  Use this skill ANY time you must search, lint, or rewrite code by its syntax structure.
-  ast-grep is an AST-based CLI tool. It matches code by syntax tree, not by text.
-  ALWAYS prefer it over grep/ripgrep when the query is about code structure.
-  Trigger categories: structural code search (find all calls to X, functions without Y),
-  bulk code rewrite/codemod (replace API calls, migrate deprecated patterns),
-  custom lint rules (enforce project patterns), multi-pass symbol renaming,
-  code outline/structure exploration, ast-grep rule authoring.
-  Trigger keywords: ast-grep, sg, structural search, codemod, rewrite pattern,
-  metavariable, tree-sitter pattern, lint rule, sgconfig, find all calls,
-  refactor across files, AST.
-  Do NOT trigger for: plain string or regex searches, file-name lookups,
-  log/config searches, single-file edits you can do by hand.
+  AST-based structural code search, lint, and rewrite via the `ast-grep` (`sg`) CLI.
+  Use when a search or edit is about code SYNTAX STRUCTURE rather than text: finding every
+  call site of a function, matching shapes such as "async functions without try/catch" or
+  "useEffect without a dependency array", codemods that rewrite matched nodes, YAML lint
+  rules that enforce project patterns, multi-pass symbol renaming, or listing a file's
+  symbols, imports and exports.
+  Also use whenever the request names ast-grep, sg, metavariables ($NAME, $$$ARGS),
+  tree-sitter patterns, or sgconfig.yml.
+  Use INSTEAD of grep/ripgrep whenever the pattern spans multiple lines, nests parentheses
+  or brackets, or would otherwise match inside strings and comments.
+  Covers 25+ languages (JS, TS, TSX, Python, Rust, Go, Java, C, C++, C#, Kotlin, Swift,
+  Ruby, PHP and more).
+  Prefer a sibling skill instead when the task is template/SQL/HTML/multi-format
+  replacement or a Python 2 to 3 migration (use structural-refactor).
+  Do NOT use for: plain string or regex searches, file-name lookups, log or config file
+  searches, or a single edit in one known file.
 ---
 
 # ast-grep — Structural Code Search, Lint, and Rewrite
